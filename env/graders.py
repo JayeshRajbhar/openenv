@@ -3,6 +3,10 @@
 import pandas as pd
 
 
+def _strict_score(value: float) -> float:
+    return round(min(max(float(value), 0.01), 0.99), 4)
+
+
 def grade_task1(df: pd.DataFrame) -> float:
     score = 0.0
 
@@ -26,14 +30,14 @@ def grade_task1(df: pd.DataFrame) -> float:
             valid_n = non_null.isin(valid_countries).sum()
             score += 0.25 * (valid_n / len(non_null))
 
-    return round(float(score), 4)
+    return _strict_score(score)
 
 
 def grade_task2(df: pd.DataFrame) -> float:
     score = 0.0
     n = len(df)
     if n == 0:
-        return 0.0
+        return 0.01
 
     if "date" in df.columns:
         pattern = r"^\d{4}-\d{2}-\d{2}$"
@@ -58,14 +62,14 @@ def grade_task2(df: pd.DataFrame) -> float:
         missing = sum(int(df[c].isna().sum()) for c in key_cols)
         score += 0.25 * (1.0 - missing / total_cells)
 
-    return round(float(score), 4)
+    return _strict_score(score)
 
 
 def grade_task3(df: pd.DataFrame) -> float:
     score = 0.0
     n = len(df)
     if n == 0:
-        return 0.0
+        return 0.01
 
     if "user_id" in df.columns:
         dup = df["user_id"].duplicated().sum()
@@ -88,7 +92,7 @@ def grade_task3(df: pd.DataFrame) -> float:
     if "page_views" in df.columns and df["page_views"].isna().sum() == 0:
         score += 0.165
 
-    return round(float(score), 4)
+    return _strict_score(score)
 
 
 def grade_task(task_id: str, df: pd.DataFrame) -> float:
@@ -99,5 +103,5 @@ def grade_task(task_id: str, df: pd.DataFrame) -> float:
     }
     fn = dispatch.get(task_id)
     if fn is None:
-        return 0.0
+        return 0.01
     return fn(df)
