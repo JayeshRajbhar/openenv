@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "data-cleaning-benchmark"
+version = "1.0.0"
+description = "A multi-task OpenEnv benchmark for tabular data cleaning."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.110.0",
+    "uvicorn==0.27.1",
+    "pydantic==2.6.3",
+    "pandas==2.2.1",
+    "numpy==1.26.4",
+    "openai==1.14.0",
+    "python-dotenv==1.0.1",
+    "httpx==0.27.0",
+    "pytest==8.1.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
