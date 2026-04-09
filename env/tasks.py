@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from typing import Any, Dict
 
@@ -23,7 +23,7 @@ TASK1_DESCRIPTION = (
     "1) Remove exact duplicate rows\n"
     "2) Fill missing emails using constant 'unknown@email.com'\n"
     "3) Fill missing ages using median\n"
-    "4) Standardize country names → 'United States', 'United Kingdom', 'Canada', 'Australia'"
+    "4) Standardize country names to United States, United Kingdom, Canada, Australia"
 )
 
 TASK2_DIRTY = [
@@ -129,7 +129,7 @@ TASK2_DESCRIPTION = (
     "Clean an e-commerce orders dataset. Issues to fix:\n"
     "1) Normalise all dates to YYYY-MM-DD format using convert_type(date, datetime)\n"
     "2) Convert price column to float (strips $ signs automatically)\n"
-    "3) Standardise category typos: 'Furnitre'→'Furniture', 'ELECTRONICS'→'Electronics', 'Electronix'→'Electronics'\n"
+    "3) Standardise category typos: Furnitre to Furniture, ELECTRONICS to Electronics, Electronix to Electronics\n"
     "4) Fill missing price with median; fill or remove missing category rows"
 )
 
@@ -150,7 +150,7 @@ TASK3_DIRTY = [
 
 TASK3_DESCRIPTION = (
     "Clean a web analytics dataset. Issues to fix:\n"
-    "1) Remove duplicate user_ids (exact + near-duplicates — keep first occurrence)\n"
+    "1) Remove duplicate user_ids (exact + near-duplicates, keep first occurrence)\n"
     "2) Clip session_duration outliers to max 1000 seconds\n"
     "3) Clip bounce_rate to valid range [0.0, 1.0]\n"
     "4) Fill missing page_views with median"
