@@ -50,17 +50,17 @@ action_space:
   type: structured_json
   actions:
     - name: fill_missing
-      params: [column, strategy(mean|median|mode|constant), value?]
+      params: ["column", "strategy(mean|median|mode|constant)", "value?"]
     - name: standardize_values
-      params: [column, mapping(dict)]
+      params: ["column", "mapping(dict)"]
     - name: remove_duplicates
       params: []
     - name: remove_row
-      params: [row_id(int)]
+      params: ["row_id(int)"]
     - name: convert_type
-      params: [column, target_type(float|int|str|datetime)]
+      params: ["column", "target_type(float|int|str|datetime)"]
     - name: clip_outliers
-      params: [column, lower?, upper?]
+      params: ["column", "lower?", "upper?"]
     - name: submit
       params: []
 
