@@ -40,7 +40,8 @@ def test_step_after_done_is_no_op():
     env.step(Action(type="submit"))
     result = env.step(Action(type="remove_duplicates"))
     assert result.done
-    assert result.reward == 0.0
+    assert 0.0 < result.reward < 1.0
+    assert result.reward == result.info["final_score"]
 
 
 def test_convert_type_datetime():

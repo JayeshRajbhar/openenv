@@ -24,7 +24,7 @@ class DataCleaningEnv:
         self.action_history: list = []
         self.cumulative_reward: float = 0.0
         self.done: bool = False
-        self.final_score: float = 0.0
+        self.final_score: float = 0.01
 
     def reset(self, task_id: Optional[str] = None) -> Observation:
         if task_id is None:
@@ -38,16 +38,21 @@ class DataCleaningEnv:
         self.action_history = []
         self.cumulative_reward = 0.0
         self.done = False
-        self.final_score = 0.0
+        self.final_score = 0.01
         return self._build_observation()
 
     def step(self, action: Action) -> StepResult:
         if self.done:
             return StepResult(
                 observation=self._build_observation(),
-                reward=0.0,
+                reward=self.final_score,
                 done=True,
-                info={"error": "Episode already finished"},
+                info={
+                    "error": "Episode already finished",
+                    "cumulative_reward": self.cumulative_reward,
+                    "final_score": self.final_score,
+                    "step": self.step_count,
+                },
             )
 
         error: Optional[str] = None

@@ -1,10 +1,21 @@
 ﻿from __future__ import annotations
 
+import math
+
 import pandas as pd
 
 
 def _strict_score(value: float) -> float:
-    return round(min(max(float(value), 0.01), 0.99), 4)
+    try:
+        score = float(value)
+    except (TypeError, ValueError):
+        return 0.01
+
+    # Guard against NaN/inf so every grader output is always in (0, 1).
+    if not math.isfinite(score):
+        return 0.01
+
+    return round(min(max(score, 0.01), 0.99), 4)
 
 
 def grade_task1(df: pd.DataFrame) -> float:
@@ -96,12 +107,26 @@ def grade_task3(df: pd.DataFrame) -> float:
 
 
 def grade_task(task_id: str, df: pd.DataFrame) -> float:
-    dispatch = {
-        "task1_easy": grade_task1,
-        "task2_medium": grade_task2,
-        "task3_hard": grade_task3,
-    }
-    fn = dispatch.get(task_id)
+    fn = TASK_GRADERS.get(task_id)
     if fn is None:
         return 0.01
     return fn(df)
+
+
+def grade_task1_easy(df: pd.DataFrame) -> float:
+    return grade_task1(df)
+
+
+def grade_task2_medium(df: pd.DataFrame) -> float:
+    return grade_task2(df)
+
+
+def grade_task3_hard(df: pd.DataFrame) -> float:
+    return grade_task3(df)
+
+
+TASK_GRADERS = {
+    "task1_easy": grade_task1_easy,
+    "task2_medium": grade_task2_medium,
+    "task3_hard": grade_task3_hard,
+}

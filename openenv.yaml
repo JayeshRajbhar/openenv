@@ -14,16 +14,25 @@ tasks:
     difficulty: easy
     max_steps: 20
     description: "Remove duplicates, fill missing values, standardise country names."
+    grader: env.graders:grade_task1_easy
+    grader_fn: env.graders:grade_task1_easy
+    grader_path: env.graders:grade_task1_easy
   - id: task2_medium
     name: "E-commerce Orders Normalisation"
     difficulty: medium
     max_steps: 20
     description: "Fix mixed date formats, convert price strings, correct category typos."
+    grader: env.graders:grade_task2_medium
+    grader_fn: env.graders:grade_task2_medium
+    grader_path: env.graders:grade_task2_medium
   - id: task3_hard
     name: "Analytics Data Deep Clean"
     difficulty: hard
     max_steps: 20
     description: "Resolve duplicate user IDs, clip session outliers, fix invalid bounce rates."
+    grader: env.graders:grade_task3_hard
+    grader_fn: env.graders:grade_task3_hard
+    grader_path: env.graders:grade_task3_hard
 
 observation_space:
   type: structured_json

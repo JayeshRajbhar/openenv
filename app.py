@@ -9,6 +9,7 @@ from pydantic import BaseModel
 
 from env.environment import DataCleaningEnv
 from env.models import Action
+from env.tasks import list_tasks as list_task_specs
 
 app = FastAPI(
     title="Data Cleaning OpenEnv Benchmark",
@@ -28,10 +29,11 @@ sessions: Dict[str, DataCleaningEnv] = {}
 
 @app.get("/")
 def root():
+    tasks = list_task_specs()
     return {
         "name": "Data Cleaning OpenEnv Benchmark",
         "version": "1.0.0",
-        "tasks": ["task1_easy", "task2_medium", "task3_hard"],
+        "tasks": tasks,
         "api": {
             "reset": "POST /reset",
             "step": "POST /step/{session_id}",
@@ -80,13 +82,7 @@ def delete_session(session_id: str):
 
 @app.get("/tasks")
 def list_tasks():
-    return {
-        "tasks": [
-            {"id": "task1_easy", "difficulty": "easy", "max_steps": 20},
-            {"id": "task2_medium", "difficulty": "medium", "max_steps": 20},
-            {"id": "task3_hard", "difficulty": "hard", "max_steps": 20},
-        ]
-    }
+    return {"tasks": list_task_specs()}
 
 
 def _get_session(session_id: str) -> DataCleaningEnv:

@@ -86,12 +86,11 @@ def run_inference() -> None:
     step = 0
     done = False
     success = False
-    started = False
+
+    print(f"[START] task={TASK_ID} env={ENV_NAME} model={MODEL_NAME}", flush=True)
 
     try:
         obs = env.reset(task_id=TASK_ID)
-        started = True
-        print(f"[START] task={TASK_ID} env={ENV_NAME} model={MODEL_NAME}", flush=True)
 
         while not done and step < MAX_STEPS:
             try:
@@ -129,17 +128,21 @@ def run_inference() -> None:
             )
 
         success = bool(env.final_score >= 0.5)
+    except Exception:
+        success = False
     finally:
-        if hasattr(env, "close"):
-            env.close()
+        try:
+            if hasattr(env, "close"):
+                env.close()
+        except Exception:
+            pass
 
-        if started:
-            rewards_str = ",".join(f"{reward:.2f}" for reward in rewards)
-            print(
-                f"[END] success={'true' if success else 'false'} "
-                f"steps={step} rewards={rewards_str}",
-                flush=True,
-            )
+        rewards_str = ",".join(f"{reward:.2f}" for reward in rewards)
+        print(
+            f"[END] success={'true' if success else 'false'} "
+            f"steps={step} rewards={rewards_str}",
+            flush=True,
+        )
 
 
 if __name__ == "__main__":

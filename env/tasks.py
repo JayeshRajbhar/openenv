@@ -156,6 +156,12 @@ TASK3_DESCRIPTION = (
     "4) Fill missing page_views with median"
 )
 
+TASK_GRADER_ENTRYPOINTS = {
+    "task1_easy": "env.graders:grade_task1_easy",
+    "task2_medium": "env.graders:grade_task2_medium",
+    "task3_hard": "env.graders:grade_task3_hard",
+}
+
 
 def get_task(task_id: str) -> Dict[str, Any]:
     registry = {
@@ -163,16 +169,25 @@ def get_task(task_id: str) -> Dict[str, Any]:
             "description": TASK1_DESCRIPTION,
             "dirty_df": pd.DataFrame(TASK1_DIRTY),
             "difficulty": "easy",
+            "grader": TASK_GRADER_ENTRYPOINTS["task1_easy"],
+            "grader_fn": TASK_GRADER_ENTRYPOINTS["task1_easy"],
+            "grader_path": TASK_GRADER_ENTRYPOINTS["task1_easy"],
         },
         "task2_medium": {
             "description": TASK2_DESCRIPTION,
             "dirty_df": pd.DataFrame(TASK2_DIRTY),
             "difficulty": "medium",
+            "grader": TASK_GRADER_ENTRYPOINTS["task2_medium"],
+            "grader_fn": TASK_GRADER_ENTRYPOINTS["task2_medium"],
+            "grader_path": TASK_GRADER_ENTRYPOINTS["task2_medium"],
         },
         "task3_hard": {
             "description": TASK3_DESCRIPTION,
             "dirty_df": pd.DataFrame(TASK3_DIRTY),
             "difficulty": "hard",
+            "grader": TASK_GRADER_ENTRYPOINTS["task3_hard"],
+            "grader_fn": TASK_GRADER_ENTRYPOINTS["task3_hard"],
+            "grader_path": TASK_GRADER_ENTRYPOINTS["task3_hard"],
         },
     }
     if task_id not in registry:
@@ -183,3 +198,32 @@ def get_task(task_id: str) -> Dict[str, Any]:
 
 
 TASK_IDS = ["task1_easy", "task2_medium", "task3_hard"]
+
+
+def list_tasks() -> list[dict[str, Any]]:
+    return [
+        {
+            "id": "task1_easy",
+            "difficulty": "easy",
+            "max_steps": 20,
+            "grader": TASK_GRADER_ENTRYPOINTS["task1_easy"],
+            "grader_fn": TASK_GRADER_ENTRYPOINTS["task1_easy"],
+            "grader_path": TASK_GRADER_ENTRYPOINTS["task1_easy"],
+        },
+        {
+            "id": "task2_medium",
+            "difficulty": "medium",
+            "max_steps": 20,
+            "grader": TASK_GRADER_ENTRYPOINTS["task2_medium"],
+            "grader_fn": TASK_GRADER_ENTRYPOINTS["task2_medium"],
+            "grader_path": TASK_GRADER_ENTRYPOINTS["task2_medium"],
+        },
+        {
+            "id": "task3_hard",
+            "difficulty": "hard",
+            "max_steps": 20,
+            "grader": TASK_GRADER_ENTRYPOINTS["task3_hard"],
+            "grader_fn": TASK_GRADER_ENTRYPOINTS["task3_hard"],
+            "grader_path": TASK_GRADER_ENTRYPOINTS["task3_hard"],
+        },
+    ]
