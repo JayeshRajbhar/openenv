@@ -13,6 +13,8 @@ from .tasks import TASK_IDS, get_task
 
 class DataCleaningEnv:
     MAX_STEPS: int = 20
+    MIN_EPISODE_SCORE: float = 0.01
+    MAX_EPISODE_SCORE: float = 0.99
 
     def __init__(self) -> None:
         self.task_id: Optional[str] = None
@@ -22,6 +24,7 @@ class DataCleaningEnv:
         self.step_count: int = 0
         self.cleaning_log: list = []
         self.action_history: list = []
+        self.raw_cumulative_reward: float = 0.0
         self.cumulative_reward: float = 0.0
         self.done: bool = False
         self.final_score: float = 0.01
@@ -36,6 +39,7 @@ class DataCleaningEnv:
         self.step_count = 0
         self.cleaning_log = []
         self.action_history = []
+        self.raw_cumulative_reward = 0.0
         self.cumulative_reward = 0.0
         self.done = False
         self.final_score = 0.01
@@ -50,6 +54,7 @@ class DataCleaningEnv:
                 info={
                     "error": "Episode already finished",
                     "cumulative_reward": self.cumulative_reward,
+                    "raw_cumulative_reward": self.raw_cumulative_reward,
                     "final_score": self.final_score,
                     "step": self.step_count,
                 },
@@ -73,7 +78,8 @@ class DataCleaningEnv:
                 self.cleaning_log.append(f"[ERROR] {error}")
 
         self.step_count += 1
-        self.cumulative_reward = round(self.cumulative_reward + reward, 4)
+        self.raw_cumulative_reward = round(self.raw_cumulative_reward + reward, 4)
+        self.cumulative_reward = self._clamp_episode_score(self.raw_cumulative_reward)
         self.action_history.append(action.model_dump())
 
         if not self.done and self.step_count >= self.MAX_STEPS:
@@ -87,6 +93,7 @@ class DataCleaningEnv:
             info={
                 "error": error,
                 "cumulative_reward": self.cumulative_reward,
+                "raw_cumulative_reward": self.raw_cumulative_reward,
                 "final_score": self.final_score,
                 "step": self.step_count,
             },
@@ -97,12 +104,17 @@ class DataCleaningEnv:
             "task_id": self.task_id,
             "step_count": self.step_count,
             "cumulative_reward": self.cumulative_reward,
+            "raw_cumulative_reward": self.raw_cumulative_reward,
             "final_score": self.final_score,
             "done": self.done,
             "cleaning_log": self.cleaning_log,
             "action_history": self.action_history,
             "current_data": self._df_records_with_none(self.current_df) if self.current_df is not None else [],
         }
+
+    @classmethod
+    def _clamp_episode_score(cls, value: float) -> float:
+        return round(min(max(value, cls.MIN_EPISODE_SCORE), cls.MAX_EPISODE_SCORE), 4)
 
     def _apply_action(self, action: Action) -> Tuple[float, str]:
         df = self.current_df

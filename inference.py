@@ -140,7 +140,7 @@ def run_inference() -> None:
         rewards_str = ",".join(f"{reward:.2f}" for reward in rewards)
         print(
             f"[END] success={'true' if success else 'false'} "
-            f"steps={step} rewards={rewards_str}",
+            f"steps={step} score={env.final_score:.2f} rewards={rewards_str}",
             flush=True,
         )
 

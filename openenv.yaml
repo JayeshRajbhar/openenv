@@ -67,7 +67,7 @@ action_space:
 reward:
   type: shaped
   intermediate: true
-  range: [-0.20, 0.99]
+  range: [0.01, 0.99]
   description: >
     Positive rewards for correct cleaning steps; small penalties for
     invalid or wasted actions; final grader score awarded on submit().
@@ -76,8 +76,10 @@ api:
   base_path: "/"
   endpoints:
     reset: "POST /reset"
-    step: "POST /step/{session_id}"
-    state: "GET  /state/{session_id}"
+    step: "POST /step"
+    state: "GET  /state"
+    step_legacy: "POST /step/{session_id}"
+    state_legacy: "GET  /state/{session_id}"
     health: "GET  /health"
     tasks: "GET  /tasks"
 
